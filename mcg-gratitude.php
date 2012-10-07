@@ -4,7 +4,7 @@ Plugin Name: Gratitudes
 Plugin URI: http://gratitude.mcgarity.me/
 Description: Adds a Gratitude custom post type to your WordPress.org site, allowing you to maintain a daily gratitude journal.
 Author: Matthew McGarity
-Version: 0.2
+Version: 0.4
 Author URI: http://mcgarity.me
 */
 
@@ -149,7 +149,8 @@ class MCG_Gratitude {
 
 		if ( get_post_type( $post ) == 'mcg-gratitude' ) {
 
-			$mcg_gratitude_return = '<p>On this date, I was grateful for...</p>';
+			// 0.4 Replace word "date" with "day" (more elegant phrasing)
+			$mcg_gratitude_return = '<p>On this day, I was grateful for...</p>';
 			$mcg_gratitude_return = $mcg_gratitude_return . '<ol>' . "\n";
 			$mcg_gratitude_return = $mcg_gratitude_return . '<li id="' . $post->ID . '-gratitude-1">' . get_post_meta( $post->ID, 'mcg_gratitude_meta1_value', true ) . '</li>' . "\n";
 			$mcg_gratitude_return = $mcg_gratitude_return . '<li id="' . $post->ID . '-gratitude-2">' . get_post_meta( $post->ID, 'mcg_gratitude_meta2_value', true ) . '</li>' . "\n";
@@ -172,8 +173,9 @@ class MCG_Gratitude {
 
 		if  ( 'mcg-gratitude' == $screen->post_type ) {
 			// 0.2 Fix issue with date not accounting for GMT offset
+			// 0.4 Refine title to include more than just date
 			//$title = date( get_option('date_format') );
-			$title = date_i18n( get_option( 'date_format' ), time() + ( get_option( 'gmt_offset' ) * 3600 ) );
+			$title = 'Gratitudes for ' . date_i18n( get_option( 'date_format' ), time() + ( get_option( 'gmt_offset' ) * 3600 ) );
 		}
 
 		return $title;
@@ -184,10 +186,15 @@ class MCG_Gratitude {
      */
 	function mcg_change_default_title_2( $title ) {
 
-		if ( $title == '' ) {
+		// 0.3 Fix issue with title being overwritten outside of Gratitudes Add/Edit Post screen
+		$screen = get_current_screen();
+
+		if  ( 'mcg-gratitude' == $screen->post_type && $title == '' ) {
+		//if ( $title == '' ) {
 			// 0.2 Fix issue with date not accounting for GMT offset
+			// 0.4 Refine title to include more than just date
 			//$title = date( get_option('date_format') );
-			$title = date_i18n( get_option( 'date_format' ), time() + ( get_option( 'gmt_offset' ) * 3600 ) );
+			$title = 'Gratitudes for ' . date_i18n( get_option( 'date_format' ), time() + ( get_option( 'gmt_offset' ) * 3600 ) );
 		}
 
 		return $title;
@@ -234,6 +241,37 @@ class MCG_Gratitude {
 		return $qv;
 
 	}
+	
+	/**
+	 * 0.4 Default excerpt equal to displayed post content, to better show in
+	 * Archive templates and RSS feeds
+	 */ 
+	function mcg_change_default_excerpt( $post_id ) {
+	
+		global $post;
+
+		if ( get_post_type( $post ) == 'mcg-gratitude' ) {
+
+			$mcg_gratitude_return = '<p>On this day, I was grateful for...</p>' . "\n";
+			$mcg_gratitude_return .= '<ol>' . "\n";
+	
+			for ( $i = 1; $i <= 3; $i++ ) {
+	
+				$data = $_POST[self::$mcg_gratitude_metabox['name'].$i.'_value'];
+
+				if ( $data ) {				
+					$mcg_gratitude_return .= '<li id="' . $post->ID . '-gratitude-' . $i . '">' . $data . '</li>' . "\n";
+				}
+				
+			}
+
+			$mcg_gratitude_return .= '</ol>';
+
+			return $mcg_gratitude_return;
+			
+		}
+		
+	}
 
 } // End MCG_Gratitude
 
@@ -251,3 +289,5 @@ add_filter( 'title_save_pre',   array( $MCG_Gratitude, 'mcg_change_default_title
 add_action( 'admin_head',       array( $MCG_Gratitude, 'mcg_apple_touch_icon' ) );
 add_action( 'admin_head',       array( $MCG_Gratitude, 'mcg_admin_menu_icon' ) );
 add_filter( 'request',          array( $MCG_Gratitude, 'mcg_include_gratitudes_in_feed' ) );
+// 0.4 Default excerpt equal to displayed post content
+add_filter( 'excerpt_save_pre', array( $MCG_Gratitude, 'mcg_change_default_excerpt' ) );
