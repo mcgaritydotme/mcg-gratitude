@@ -1,7 +1,8 @@
 == Changelog ==
 
 = 0.4 =
-* Fixed issue where titles would default to current date outside of Gratitudes Add/Edit post screen (ex: Appearances > Menu)
+* Fixed issue where excerpts were not well-formatted
+* Tweaked default Gratitude title to include reference to Gratitudes vs. just date
 
 = 0.3 =
 * Fixed issue where titles would default to current date outside of Gratitudes Add/Edit post screen (ex: Appearances > Menu)
