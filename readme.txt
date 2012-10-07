@@ -1,5 +1,11 @@
 == Changelog ==
 
+= 0.4 =
+* Fixed issue where titles would default to current date outside of Gratitudes Add/Edit post screen (ex: Appearances > Menu)
+
+= 0.3 =
+* Fixed issue where titles would default to current date outside of Gratitudes Add/Edit post screen (ex: Appearances > Menu)
+
 = 0.2 =
 * Initial release to WP plugin repository
 * Fixed issue with default Gratitude title not accounting for GMT offset
