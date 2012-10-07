@@ -49,7 +49,7 @@ class MCG_Gratitude {
 			'rewrite' => array( 'slug' => 'gratitudes' ),
 			'hierarchical' => false,
 			'menu_position' => null,
-			'supports' => array( 'title', 'comments' ),
+			'supports' => array( 'title', 'comments' )
 		);
 
 		register_post_type( 'mcg-gratitude' , $args );
