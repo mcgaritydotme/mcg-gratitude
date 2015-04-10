@@ -4,7 +4,7 @@ Plugin Name: Gratitudes
 Plugin URI: http://gratitude.mcgarity.me/
 Description: Adds a Gratitude custom post type to your WordPress.org site, allowing you to maintain a daily gratitude journal.
 Author: Matthew McGarity
-Version: 0.4
+Version: 0.5
 Author URI: http://mcgarity.me
 */
 
@@ -49,7 +49,8 @@ class MCG_Gratitude {
 			'rewrite' => array( 'slug' => 'gratitudes' ),
 			'hierarchical' => false,
 			'menu_position' => null,
-			'supports' => array( 'title', 'comments' )
+			'supports' => array( 'title', 'comments' ),
+			'menu_icon' => 'dashicons-smiley'			
 		);
 
 		register_post_type( 'mcg-gratitude' , $args );
@@ -287,7 +288,7 @@ add_filter( 'the_content',      array( $MCG_Gratitude, 'mcg_display_gratitude_me
 add_filter( 'enter_title_here', array( $MCG_Gratitude, 'mcg_change_default_title_1' ) );
 add_filter( 'title_save_pre',   array( $MCG_Gratitude, 'mcg_change_default_title_2' ) );
 add_action( 'admin_head',       array( $MCG_Gratitude, 'mcg_apple_touch_icon' ) );
-add_action( 'admin_head',       array( $MCG_Gratitude, 'mcg_admin_menu_icon' ) );
+//add_action( 'admin_head',       array( $MCG_Gratitude, 'mcg_admin_menu_icon' ) );
 add_filter( 'request',          array( $MCG_Gratitude, 'mcg_include_gratitudes_in_feed' ) );
 // 0.4 Default excerpt equal to displayed post content
 add_filter( 'excerpt_save_pre', array( $MCG_Gratitude, 'mcg_change_default_excerpt' ) );
