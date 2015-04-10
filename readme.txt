@@ -1,5 +1,9 @@
 == Changelog ==
 
+= 0.5 =
+* Fixed admin menu icon to use dashicon, fitting in with WordPress 3.8+ schemes
+* Tested/confirmed on WordPress 4.1.*
+
 = 0.4 =
 * Fixed issue where excerpts were not well-formatted
 * Tweaked default Gratitude title to include reference to Gratitudes vs. just date
